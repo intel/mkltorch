@@ -1,16 +1,17 @@
-# mkltorch
+**mkltorch**
+=================
 MKLDNN library is designed to accelerate Deep Neural Network(DNN) 
 computation on CPU, in particular Intel® Xeon processors (HSW, 
 BDW, Xeon Phi). The repo of mkltorch provides mklTensor to be called
  in MKLDNN library in [Torch7](http://torch.ch) for convenience .
 # Relation with torch
-__Torch__ is the main package in Torch7 where data structures for 
+__Torch__ is the main package in [Torch7](https://github.com/torch/torch7) where data structures for 
 multi-dimensional tensors and mathematical operationsover these are 
 defined. Additionally, it provides many utilities for accessing files,
  serializing objects of arbitrary types and other useful utilities.
 
-__mklTorch__ warps the data structure of tensor which is provided by
-__Torch__ and offers a Tensor which can be named as mklTensor. It is 
+__mklTorch__ wraps the data structure of tensor which is provided by
+__Torch__ to offer a new tensor which is named as mklTensor. It is 
 necessary to convert the regular tensor to mklTensor if you want to 
 use MKLDNN to boost your neural networksi computation.
 
@@ -32,16 +33,15 @@ c = b:th()
 __NOTE:__ 
 
   * mklTensor doesn't provide any basic mathematical operations. You can 
-transfer it to a regular tensor if necessary.
-  * Any convertions only occur between the two types tentors which have
+transfer it to a regular tensor first then operate it if necessary.
+  * Any convertions only occur between the two types tensors which have
  same data type.In other word, a regular tensor with float type only can 
-be converted to MKLFloatTensor. It is impossible to get a corresponding 
-MKLDoubleTensor.
+be converted to MKLFloatTensor. It is impossible to convert it to a MKLDoubleTensor.
   * There are only two type data structures of mklTensor(float and double)
  currently.   
 
 ## mklTensor Library ##
-It offers mklTensor some basic operation to create, copy, convert or query some infos.
+It offers mklTensor some basic operations to create, copy, convert or query some infos.
    * new()               
      create a new mklTensor and return it.
    * th()                
@@ -70,5 +70,12 @@ The package also provide a regular tensor conversion methods to get the correspo
      convert a regular float tensor to the MKLFloatTensor and return the MKLFloatTensor.
    * mklDouble()         
      convert a regular double tensor to the MKLDoubleTensor and return the MKLDoubleTensor.
+
+__NOTE:__
+ 
+ If you have any confusion about these repo, please contact us and help us improve the repo. 
+## How to contribute these repo
+You should have confidence that the gap of performance between CPU and CPU is not that huge exaggeratively.
+join us and let your CPU speedup. You can pull request on the repo to help us improve it.
 
 
