@@ -73,9 +73,9 @@ The package also provide a regular tensor conversion methods to get the correspo
 
 __NOTE:__
  
- If you have any confusion about these repo, please contact us and help us improve the repo. 
-## How to contribute these repo
-You should have confidence that the gap of performance between CPU and CPU is not that huge exaggeratively.
-join us and let your CPU speedup. You can pull request on the repo to help us improve it.
+ If you have any confusion about these repo, please contact us and help us improve this readme. 
+## How to contribute to these repo
+You should have confidence that the gap of performance between CPU and GPU is not that huge exaggeratively.
+join us and let your CPU speedup. You can pull request to the repo to help us improve it.
 
 
