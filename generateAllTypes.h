@@ -25,14 +25,5 @@
 #undef accreal
 #undef Real
 #undef BIT
-/*
-#define real long
-#define accreal long
-#define Real Long
-#line 1 TH_GENERIC_FILE
-#include TH_GENERIC_FILE
-#undef real
-#undef accreal
-#undef Real
-*/
+
 #undef TH_GENERIC_FILE

@@ -38,7 +38,7 @@ void TH_MKL_(convertToTH)(THTensor * pTensor, THMKLTensor * src)
 {
   //pTensor->size = src->size;
   if ((0 == src->workspace[0]) && (0 == src->workspace[1])){
-	TH_MKL_(createWorkspace)(src);
+    TH_MKL_(createWorkspace)(src);
   }
   if (0 != src->workspace[0]*src->workspace[1])
   {
@@ -46,7 +46,7 @@ void TH_MKL_(convertToTH)(THTensor * pTensor, THMKLTensor * src)
     dnnError_t err;
     dnnPrimitive_t cvtPrmt = (dnnPrimitive_t)src->workspace[0];
     //  real * cvtbuffer = (real *)src->workspace[1];
-	
+    
     if( cvtPrmt != 0)
     {
       CHECK_ERR( MKLDNN_(dnnConversionExecute)(cvtPrmt, src->tensor->storage->data, pTensor->storage->data), err );
@@ -85,7 +85,7 @@ void TH_MKL_(setMKLdata)(THMKLTensor *self, real * mkldata)
   //mkldata is allocated by MKLDNN, should not be freed by torch
   //free original torch buffer
   if(self->mkldnnLayout == 0){
-    int memSize = self->tensor->storage->size;
+    size_t memSize = self->tensor->storage->size;
     THStorage_(free)(self->tensor->storage);
     self->tensor->storage = THStorage_(newWithData)(mkldata, memSize);
   }
@@ -95,20 +95,20 @@ void TH_MKL_(setMKLdata)(THMKLTensor *self, real * mkldata)
 
 }
 
-void TH_MKL_(resize4d)(THMKLTensor *self, long size0, long size1, long size2, long size3)
+void TH_MKL_(resize4d)(THMKLTensor *self, size_t size0, size_t size1, size_t size2, size_t size3)
 {
-	//printf("retain --permission-----------refcount = %4d\n", self->freeFlag);
-  long size[4] = {size0, size1, size2, size3};
+    //printf("retain --permission-----------refcount = %4d\n", self->freeFlag);
+  size_t size[4] = {size0, size1, size2, size3};
   THTensor_(resizeNd)(self->tensor, 4, size, NULL);
   self->tensor->flag = MKL_TENSOR_FLAG;
   self->tensor->refcount = 2;
-  self->size = self->tensor->size;	
+  self->size = self->tensor->size;    
 }
 
 void TH_MKL_(resizeAs)(THMKLTensor *self, THMKLTensor *src)
 {
-	//printf("retain --permission-----------refcount = %4d\n", self->freeFlag);
-	
+    //printf("retain --permission-----------refcount = %4d\n", self->freeFlag);
+    
   if(!THTensor_(isSameSizeAs)(self->tensor, src->tensor))
   {
     THTensor_(resizeNd)(self->tensor, src->tensor->nDimension, src->tensor->size, NULL);
@@ -122,7 +122,7 @@ void TH_MKL_(resizeAs)(THMKLTensor *self, THMKLTensor *src)
 //----------------------------------------------------------------------------
 void TH_MKL_(retain)(THMKLTensor *self)
 {
-	printf("retain --permission-----------refcount = %4d\n", self->freeFlag);
+    printf("retain --permission-----------refcount = %4d\n", self->freeFlag);
 }
 
 void TH_MKL_(free)(THMKLTensor *self)
@@ -132,14 +132,14 @@ void TH_MKL_(free)(THMKLTensor *self)
   
   if(self->freeFlag & TH_MKL_FREE_PERMISSION) 
   {
-	printf("free   --permission-----------refcount = %4d\n", self->freeFlag);
-	if(1 == self->mklStorage){
-		printf("you should free the tensor memory using mkldnn method");
-	}
-	if(NULL != self->workspace){
-		printf("you should free the workspace memory using mkldnn method");
-	}
-	THFree(self);
+    printf("free   --permission-----------refcount = %4d\n", self->freeFlag);
+    if(1 == self->mklStorage){
+        printf("you should free the tensor memory using mkldnn method");
+    }
+    if(NULL != self->workspace){
+        printf("you should free the workspace memory using mkldnn method");
+    }
+    THFree(self);
   } 
 }
 
@@ -200,7 +200,7 @@ static int torch_mkl_(new)(lua_State *L)
   luaT_pushudata(L, pTensor, torch_mkl_tensor);    
   //printf("construct THMKLTensor = %p\n", pTensor);
   //printf("construct tensor      = %p\n", pTensor->tensor);
-	
+    
   return 1;
 }
 
@@ -399,20 +399,20 @@ static int torch_mkl_(add)(lua_State *L)
 
 static int torch_mkl_(isSeamless)(lua_State *L)
 {
-	THMKLTensor *pTensor = luaT_checkudata(L, 1, torch_mkl_tensor);
-	if (0 == pTensor->mkldnnLayout)
-	  lua_pushboolean(L, 1);
-	else
-	  lua_pushboolean(L, 0);
-	return 1;
+    THMKLTensor *pTensor = luaT_checkudata(L, 1, torch_mkl_tensor);
+    if (0 == pTensor->mkldnnLayout)
+      lua_pushboolean(L, 1);
+    else
+      lua_pushboolean(L, 0);
+    return 1;
 }
 
 static int torch_mkl_(directTH)(lua_State *L)
 {
-	THMKLTensor *pTensor = luaT_checkudata(L, 1, torch_mkl_tensor);
-	THTensor *tensor = pTensor->tensor;
-	luaT_pushudata(L, tensor, torch_Tensor);
-	return 1;
+    THMKLTensor *pTensor = luaT_checkudata(L, 1, torch_mkl_tensor);
+    THTensor *tensor = pTensor->tensor;
+    luaT_pushudata(L, tensor, torch_Tensor);
+    return 1;
 }
 
 static int torch_mkl_(factory)(lua_State *L)

@@ -2,14 +2,14 @@ package = "mkltorch"
 version = "scm-1"
 
 source = {
-   url = "git://github.com/MlWoo/mkltorch.git",
+   url = "git://github.com/intel/mkltorch.git",
 }
 
 description = {
-   summary = "Wrapper of mklnn library Implementation",
+   summary = "Wrapper of tensors used by mklnn library",
    detailed = [[
    ]],
-   homepage = "https://github.com/MlWoo/mkltorch",
+   homepage = "https://github.com/intel/mkltorch",
    license = "BSD"
 }
 
